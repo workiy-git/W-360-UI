@@ -29,6 +29,7 @@ const ViewOnlyPage = () => {
             navigate('/Preonboarding', { state: { phoneno: mobileNumber } });
         }
     };
+    
 
     // Add event listener for Enter key press
     useEffect(() => {

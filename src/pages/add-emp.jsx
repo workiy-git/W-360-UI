@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Divider, Button } from '@mui/material';
-
-
+import { Container, Typography, Button } from '@mui/material';
 import MobileNumberField from '../components/Input/mobile';
-import image1 from '.././assets/images/teamwork-concept-people-working.png';
 import loginImage from '../assets/images/MOBILE_c.png';
-import PerOnboarding from '../components/Menu/on-boarding';  // Import the PerOnboarding component
+import PerOnboarding from '../components/Menu/on-boarding';
 
 const ViewOnlyPage = () => {
     const [isMobileValid, setIsMobileValid] = useState(false);
     const [mobileNumber, setMobileNumber] = useState('');
-    const [showPerOnboarding, setShowPerOnboarding] = useState(false); // State to control component rendering
+    const [showPerOnboarding, setShowPerOnboarding] = useState(false);
+    const [state, setState] = useState({ phoneno: '' }); // Initialize state to avoid null destructuring
 
     const handleStartFill = () => {
         if (isMobileValid) {
-            // Directly show the PerOnboarding component instead of navigating
+            try {
+                if (!localStorage.getItem("currentStep")) {
+                    localStorage.setItem("currentStep", JSON.stringify({
+                        [mobileNumber]: 0 
+                    }));
+                }
+            } catch (error) {
+                localStorage.setItem("currentStep", JSON.stringify({
+                    [mobileNumber]: 0
+                }));
+            }
+            setState({ phoneno: mobileNumber });
             setShowPerOnboarding(true);
         }
     };
 
-    // Add event listener for Enter key press
     useEffect(() => {
         const handleKeyPress = (event) => {
             if (event.key === 'Enter' && isMobileValid) {
@@ -28,7 +36,6 @@ const ViewOnlyPage = () => {
         };
 
         document.addEventListener('keydown', handleKeyPress);
-
         return () => {
             document.removeEventListener('keydown', handleKeyPress);
         };
@@ -36,24 +43,22 @@ const ViewOnlyPage = () => {
 
     return (
         <Container>
-          
             {!showPerOnboarding ? (
-                <div style={{ width: '50%' }}>
-                   
-                   
+                <div style={{ width: '100%' }}>
                     <div
                         style={{
-                            width: '50%',
+                         
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            height: '100vh',
+                            marginTop:'100px'
+                           
                         }}
                     >
                         <div
                             style={{
                                 display: 'flex',
-                                marginBottom: '150px',
+                            
                                 boxShadow: '10px 10px 20px #babecc,-10px -10px -20px #ffffff',
                             }}
                         >
@@ -84,7 +89,7 @@ const ViewOnlyPage = () => {
                                             fontSize: '16px',
                                         }}
                                     >
-                                        Mobile Number
+                                       Employee Mobile Number
                                     </Typography>
                                     <img
                                         src={loginImage}
@@ -119,10 +124,11 @@ const ViewOnlyPage = () => {
                     </div>
                 </div>
             ) : (
-                // Render PerOnboarding component if mobile number is valid
-                <PerOnboarding phoneno={mobileNumber} />
+                // Render PerOnboarding component if mobile number is valid and state is set
+                showPerOnboarding && state ? (
+                    <PerOnboarding state={state} />
+                ) : null
             )}
-          
         </Container>
     );
 };

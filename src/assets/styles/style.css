@@ -1,0 +1,45 @@
+/* src/components/Shared/menu.css */
+
+/* Style for the drawer */
+.drawer {
+    width: 240px;
+    flex-shrink: 0;
+  }
+  
+  .drawerPaper {
+    box-sizing: border-box;
+    background-color: #F7F8FA;
+    color: #101820;
+  }
+  
+  /* Logo styling */
+  .logo {
+    height: 20px;
+    width: 40px;
+    margin-top: 10px;
+    padding: 10px 30px 30px 30px;
+  }
+  
+  /* Menu list style */
+  .menuList {
+    margin-top: 50px;
+  }
+  
+  /* ListItem selected and hover effect */
+  .listItem {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .listItemSelected {
+    transform: scale(1.05);
+    background-color: #DADEFD;
+
+   
+  }
+  
+  .listItemHover:hover {
+    transform: scale(1.05);
+    background-color: #808080;
+opacity: 50%;
+  }
+  

@@ -9,6 +9,44 @@ const Dashboard = ({ user }) => {
     const handleButtonClick = () => {
         navigate('/'); 
     };
+ 
+    const userRole = user.role;
+    // Array of widget data
+    const widgets = [
+        {
+            title: 'W-360',
+            description: 'Submit and verify all employee onboarding documents promptly, ensuring access to essential resources and policies for a smooth integration.',
+            onClick: handleButtonClick,
+            roles: ['admin', 'hr', 'user'] 
+        },
+        {
+            title: 'LMS',
+            description: 'A Leave Management System (LMS) is a digital platform designed to streamline the process of managing employee leave requests, approvals, and tracking in an organization.',
+            onClick: null,
+            roles: ['hr', 'user'] 
+        },
+        {
+            title: 'Attendance Management System',
+            description: 'An Attendance Management System is a software solution used to track, record, and manage employee attendance, ensuring accurate timekeeping data for an organization.',
+            onClick: null,
+            roles: ['hr'] 
+        },
+        {
+            title: 'Asset Management System',
+            description: 'An Asset Management System helps organizations track and manage physical assets throughout their lifecycle, optimizing usage, and minimizing losses through proper maintenance and monitoring.',
+            onClick: null,
+            roles: ['hr']
+        },
+        {
+            title: 'Performance Management System',
+            description: 'A Performance Management System is designed to evaluate and manage employee performance, providing tools for goal setting, progress tracking, and performance reviews, ultimately improving organizational productivity.',
+            onClick: null,
+            roles: ['hr']
+        }
+    ];
+
+    // Filter widgets based on user role
+    const filteredItems = widgets.filter(item => item.roles.includes(userRole));
 
     return (
         <div style={{
@@ -22,54 +60,16 @@ const Dashboard = ({ user }) => {
                 padding: '20px 50px',
             }}>
                 <Grid container spacing={3} justifyContent="center" alignItems="stretch">
-                    {/* First Row of Widgets */}
-                    <Grid item xs={12} md={4} onClick={handleButtonClick} style={{ cursor: 'pointer' }}>
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>W-360</Typography>
-                            <Typography>
-                                Submit and verify all employee onboarding documents promptly, ensuring access to essential resources and policies for a smooth integration.
-                            </Typography>
-                        </Paper>
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>LMS</Typography>
-                            <Typography>
-                                A Leave Management System (LMS) is a digital platform designed to streamline the process of managing employee leave requests, approvals, and tracking in an organization.
-                            </Typography>
-                        </Paper>
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Attendance Management System</Typography>
-                            <Typography>
-                                An Attendance Management System is a software solution used to track, record, and manage employee attendance, ensuring accurate timekeeping data for an organization.
-                            </Typography>
-                        </Paper>
-                    </Grid>
-
-                    {/* Second Row of Widgets */}
-                    <Grid container item xs={12} spacing={3} style={{ marginTop: '30px' }}> {/* Increased margin */}
-                        <Grid item xs={12} md={4}>
+                    {filteredItems.map((widget, index) => (
+                        <Grid item xs={12} md={4} key={index} onClick={widget.onClick} style={{ cursor: widget.onClick ? 'pointer' : 'default', marginBottom:'30px' }}>
                             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-                                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Asset Management System</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{widget.title}</Typography>
                                 <Typography>
-                                    An Asset Management System helps organizations track and manage physical assets throughout their lifecycle, optimizing usage, and minimizing losses through proper maintenance and monitoring.
+                                    {widget.description}
                                 </Typography>
                             </Paper>
                         </Grid>
-
-                        <Grid item xs={12} md={4}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-                                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Performance Management System</Typography>
-                                <Typography>
-                                    A Performance Management System is designed to evaluate and manage employee performance, providing tools for goal setting, progress tracking, and performance reviews, ultimately improving organizational productivity.
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    </Grid>
+                    ))}
                 </Grid>
             </div>
         </div>
