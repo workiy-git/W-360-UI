@@ -45,7 +45,7 @@ const Dashboard = ({ user }) => {
         sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
       >
         <Header />
-        <Container maxWidth="lg">
+        <Container maxWidth="5%">
           {renderContent()}
         </Container>
       </Box>

@@ -44,8 +44,8 @@ const stepImages = [
   { default: Documents, selected: DocumentsSelected }
 ];
 
-const PerOnboarding = () => {
-  const { state } = useLocation();
+const PerOnboarding = ({ state } ) => {
+ 
   const { phoneno } = state;
   const getCurrentPageFromLocalStorage = () => {
 
@@ -377,14 +377,14 @@ const postFormData = async (formData) => {
 
 
   return (
-    <div  className="scrollable" style={{ background: '#fff'}}>
+    <div  className="scrollable" style={{ background: '#fff', padding:'0'}}>
          <div style={{ display: 'flex', justifyContent:'space-between'}}>
       <Button
   variant="contained"
   sx={{
     padding: '5px 10px',
     marginTop: '20px',
-    marginLeft: '40px',
+ 
     backgroundColor: currentStep === 0 ? '#ccc' : '#829afe',
     '&:hover': {
       backgroundColor: currentStep === 0 ? '#ccc' : '#829af0',
@@ -398,8 +398,8 @@ const postFormData = async (formData) => {
 >
   Previous
 </Button>
-        <Button
-          style={{ background: '#212529', color: '#fff', padding: '5px 10px',  marginTop: '20px', marginRight: '40px',}}
+        {/* <Button
+          style={{ background: '#212529', color: '#fff', padding: '5px 10px',  marginTop: '5px'}}
           onClick={handleClickOpen} // Open the dialog
         >
           <img
@@ -408,11 +408,11 @@ const postFormData = async (formData) => {
             style={{ height: '20px', padding: '5px 15px 5px 5px' }}
           />
           Exit
-        </Button>
+        </Button> */}
         
       </div>
-      <div style={{ display: 'flex', margin: '5px 190px' }}>
-        <div style={{ display: 'flex', width: '100%', maxWidth: '600px', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', width: '100%', maxWidth: '600px', justifyContent: 'space-between', margin:'0px 0px 0 -50px' }}>
           {steps.map((step, index) => (
            <div
            key={index}

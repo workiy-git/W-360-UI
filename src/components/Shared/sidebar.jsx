@@ -1,13 +1,13 @@
 // src/components/Shared/menu.js
-import React, { useState } from 'react'; 
-import { Drawer, List, ListItem, ListItemText, Box } from '@mui/material';
-import { Home, People, ManageAccounts, Visibility } from '@mui/icons-material';
+import React, { useState } from 'react';
+import { Drawer, List, ListItem, ListItemText, Box, IconButton, Tooltip } from '@mui/material';
+import { Home, People, ManageAccounts, Visibility, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import logo from '../../assets/images/workiy-logo-blacklogo.png';
-
-const drawerWidth = 240;
+import '../../assets/styles/style.css';  // Import the CSS file
 
 const Sidebar = ({ userRole, onSelect }) => {
   const [selected, setSelected] = useState('');
+  const [isExpanded, setIsExpanded] = useState(true);
 
   const handleSelect = (item) => {
     setSelected(item);
@@ -16,124 +16,98 @@ const Sidebar = ({ userRole, onSelect }) => {
 
   const getIconColor = (item) => (selected === item ? '#FFFFFF' : '#c2c2c2');
 
+  const menuItems = [
+    { label: 'Home', value: 'home', icon: <Home />, roles: ['admin', 'hr', 'user'] },
+    { label: 'Add Employee', value: 'employee', icon: <People />, roles: ['hr'] },
+    { label: 'Manage Employee', value: 'manageEmployee', icon: <ManageAccounts />, roles: ['hr'] },
+    { label: 'View Employee', value: 'viewEmployee', icon: <Visibility />, roles: ['user'] },
+  ];
+
+  const filteredItems = menuItems.filter(item => item.roles.includes(userRole));
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
     <Box style={{ marginTop: '100px' }}>
       <Drawer
+        className="drawer"
         sx={{
-          width: drawerWidth,
-          flexShrink: 0,
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
-            backgroundColor: '#F7F8FA',
-            color: '#101820',
+            width: isExpanded ? '200px' : '80px',
+            transition: 'width 0.3s ease',
+            padding: '10px',
+            backgroundColor: '#F5F5F5', // Light background color for the sidebar
           },
         }}
         variant="permanent"
         anchor="left"
       >
-        <img
-          src={logo}
-          alt="Logo"
-          style={{ height: '40px', width: '80px', marginTop: '10px', padding: '10px 30px 30px 30px' }}
-        />
-        <List style={{ marginTop: '50px' }}>
-          <ListItem
-            button
-            onClick={() => handleSelect('home')}
-            sx={{
-              transition: 'transform 0.3s ease, background-color 0.3s ease',
-              transform: selected === 'home' ? 'scale(1.05)' : 'scale(1)',
-              backgroundColor: selected === 'home' ? '#DADEFD' : 'transparent',
-              borderLeft: selected === 'home' ? '4px solid #fff' : 'none',
-              '&:hover': {
-                transform: 'scale(1.05)',
-                backgroundColor: '#808080',
-                borderLeft: '4px solid #0056b3',
-              },
-            }}
-          >
-            <Home sx={{ color: getIconColor('home') }} />
-            &nbsp;&nbsp;
-            <ListItemText
-              primary="Home"
-              sx={{ color: getIconColor('home') }}
-            />
-          </ListItem>
-          
-          {userRole === 'hr' && (
-            <>
-              <ListItem
-                button
-                onClick={() => handleSelect('employee')}
-                sx={{
-                  transition: 'transform 0.3s ease, background-color 0.3s ease',
-                  transform: selected === 'employee' ? 'scale(1.05)' : 'scale(1)',
-                  backgroundColor: selected === 'employee' ? '#DADEFD' : 'transparent',
-                  borderLeft: selected === 'employee' ? '4px solid #fff' : 'none',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                    backgroundColor: '#808080',
-                    borderLeft: '4px solid #0056b3',
-                  },
-                }}
-              >
-                <People sx={{ color: getIconColor('employee') }} />
-                &nbsp;&nbsp;
-                <ListItemText
-                  primary="Add Employee"
-                  sx={{ color: getIconColor('employee') }}
-                />
-              </ListItem>
-              <ListItem
-                button
-                onClick={() => handleSelect('manageEmployee')}
-                sx={{
-                  transition: 'transform 0.3s ease, background-color 0.3s ease',
-                  transform: selected === 'manageEmployee' ? 'scale(1.05)' : 'scale(1)',
-                  backgroundColor: selected === 'manageEmployee' ? '#DADEFD' : 'transparent',
-                  borderLeft: selected === 'manageEmployee' ? '4px solid #fff' : 'none',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                    backgroundColor: '#808080',
-                    borderLeft: '4px solid #0056b3',
-                  },
-                }}
-              >
-                <ManageAccounts sx={{ color: getIconColor('manageEmployee') }} />
-                &nbsp;&nbsp;
-                <ListItemText
-                  primary="Manage Employee"
-                  sx={{ color: getIconColor('manageEmployee') }}
-                />
-              </ListItem>
-              
-            </>
-          )}
-             {userRole === 'user' && (
-              <ListItem
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          className="logoContainer"
+          sx={{ padding: '10px' }}
+        >
+          <img
+            src={logo}
+            alt="Logo"
+            className="logo"
+            style={{ width: isExpanded ? '80px' : '50px', height: 'auto', transition: 'width 0.3s ease' }}
+          />
+        </Box>
+
+        <List className="menuList">
+          {filteredItems.map((item) => (
+            <ListItem
               button
-              onClick={() => handleSelect('viewEmployee')}
+              key={item.value}
+              onClick={() => handleSelect(item.value)}
+              className={`listItem ${selected === item.value ? 'listItemSelected' : ''}`}
               sx={{
-                transition: 'transform 0.3s ease, background-color 0.3s ease',
-                transform: selected === 'viewEmployee' ? 'scale(1.05)' : 'scale(1)',
-                backgroundColor: selected === 'viewEmployee' ? '#DADEFD' : 'transparent',
-                borderLeft: selected === 'viewEmployee' ? '4px solid #fff' : 'none',
+                backgroundColor: selected === item.value ? '#DADEFD' : 'transparent',
+                marginBottom: '10px',
+                borderRadius: '10px',
+                transition: 'background-color 0.3s ease, transform 0.2s ease',
                 '&:hover': {
+                  backgroundColor: '#E0E0E0', // Subtle hover background color
                   transform: 'scale(1.05)',
-                  backgroundColor: '#808080',
-                  borderLeft: '4px solid #0056b3',
+                },
+                '& .MuiSvgIcon-root': {
+                  color: getIconColor(item.value), // Set icon color
+                  transition: 'color 0.3s ease',
                 },
               }}
             >
-              <Visibility sx={{ color: getIconColor('viewEmployee') }} />
-              &nbsp;&nbsp;
-              <ListItemText
-                primary="View Employee"
-                sx={{ color: getIconColor('viewEmployee') }}
-              />
+              {item.icon}
+              {isExpanded && (
+                <>
+                  &nbsp;&nbsp;
+                  <ListItemText
+                    primary={item.label}
+                    sx={{ color: getIconColor(item.value), fontWeight: selected === item.value ? 'bold' : 'normal' }} // Bold for selected
+                  />
+                </>
+              )}
             </ListItem>
-             )}
+          ))}
         </List>
+
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          sx={{ padding: '10px', marginTop: 'auto' }}
+        >
+          <Tooltip title={isExpanded ? 'Collapse' : 'Expand'}>
+            <IconButton onClick={toggleExpand}>
+              {isExpanded ? <ChevronLeft /> : <ChevronRight />}
+            </IconButton>
+          </Tooltip>
+        </Box>
       </Drawer>
     </Box>
   );
