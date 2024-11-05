@@ -1,6 +1,5 @@
 const devConfig = {
-  apiUrl: "http://156.67.214.40:8081/api/",
-  
+ apiUrl: "http://13.232.64.96:8081/api/",  
 };
 
 export default devConfig;
